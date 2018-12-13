@@ -17,12 +17,13 @@ Route::get('/tournaments', function(){
     return view('pages.home');
 });
 Route::get('/tournaments/{id}/info','DashboardController@show')->name('tournaments.show');
-Route::post('/tournaments/{id}/info','DashboardController@teamReg')->name('team.Reg');
+//Route::post('/tournaments/{id}/info','DashboardController@teamReg')->name('team.Reg');
 Route::resource('tournaments','DashboardController');
 // Route::get('/tournaments/{id}', function($id){
 //     return view('pages.tournaments')->with('id',$id);
 // });
-
+Route::post('/tournaments/team/check','DashboardController@addTeamName')->name('team.check');
+Route::post('/tournaments/team/add','DashboardController@addTeamMembers')->name('team.add');
 
 Auth::routes();
 
@@ -39,8 +40,7 @@ Route::prefix('admin')->group(function(){
         'names'=>[
             'index'=>'admin.home'
         ]
-    ]);
-    
+    ]);    
     // Route::get('/delete/{id}', function(){
     //     $user=User::find($id);
     //     $user->delete();
@@ -65,7 +65,9 @@ Route::prefix('host')->group(function(){
             'index'=>'host.home'
         ]
     ]);
-    Route::get('/tournament/{id}/info','HostController@show');
+    Route::get('/tournament/{id}/info','HostController@show')->name('tournament.home');
+    Route::post('/tournament/{id}/info','HostController@seedUpload')->name('seed.upload');
+    Route::post('/tournament/{id}/info','HostController@addVenueDate')->name('add.venue');
     Route::get('/t_form','HostTmntController@index');
     Route::post('/t_form','HostTmntController@create')->name('tmnt.create');
 });

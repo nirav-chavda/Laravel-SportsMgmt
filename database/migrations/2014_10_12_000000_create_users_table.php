@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('acc_no')->nullable();
             $table->string('username')->unique();
             $table->string('password');
-            $table->binary('photo')->nullable();
+            $table->text('photo')->nullable();
             $table->tinyInteger('isAdmin')->nullable();
             $table->tinyInteger('isHost')->nullable();
             $table->tinyInteger('isCrew')->nullable();

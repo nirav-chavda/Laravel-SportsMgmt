@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+
 use Auth;
 use App\tournament;
+use App\team;
 
 class HostController extends Controller
 {
@@ -33,9 +35,25 @@ class HostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function seedUpload(Request $request,$id)
     {
-        //
+        $team=team::all()->where('tournament_Id',$id);
+        $count=count($team);
+        for($i=1;$i<=$count;$i++){
+            // $flag1=${'t'.$i};
+            // $flag2=${'s'.$i};
+            $seeding=team::where('name',$request['t'.$i])->update(['seeding'=>$request['s'.$i]]);
+        }
+        \Session::flash('message', ['msg'=>'Seeding Complete!!', 'class'=>'green']);
+
+        return redirect()->route('tournament.home',$id);
+    }
+
+    public function addVenueDate(Request $request,$id){
+        $venue=tournament::where('id',$id)->update(['start_date'=>$request['date'],'venue'=>$request['venue']]);
+        \Session::flash('message', ['msg'=>'Venue & Date Added!!', 'class'=>'green']);
+
+        return redirect()->route('tournament.home',$id);
     }
 
     /**
@@ -57,8 +75,10 @@ class HostController extends Controller
      */
     public function show($id)
     {
-        $tmnt=tournament::all()->where('Tournament_Id',$id);
-        return view('pages.host-tournament')->with('tmnt',$tmnt);
+        $tmnt=tournament::where('id',$id)->first();
+        $teamUS=team::all()->where('tournament_Id',$id)->where('seeding',NULL);
+        $teamS=team::all()->where('tournament_Id',$id)->where('seeding','!=',NULL)->sortBy('seeding');
+        return view('pages.host-tournament')->with(['tmnt'=>$tmnt, 'teamUS'=>$teamUS, 'teamS'=>$teamS]);
     }
 
     /**

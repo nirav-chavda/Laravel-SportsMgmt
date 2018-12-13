@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\User;
 use Auth;
 use App\tournament;
@@ -37,11 +38,11 @@ class HostTmntController extends Controller
             'sport_id' => ['required', 'string'],
             'gtype_id' => ['required', 'string'],
             'category_id' => ['required', 'string'],
-            'pool_size'=>['required','string'],
-            'half_time' => ['required', 'string'],            
-            'break_time' => ['required', 'string'],
+            //'pool'=>['required','string'],
+            // 'half_time' => ['required', 'string'],            
+            // 'break_time' => ['required', 'string'],
             'reg_fees' => ['required', 'string'],
-            'duration' => ['required', 'string'],
+            //'duration' => ['required', 'string'],
             'total_teams'=>['required', 'string'],
             'old' => ['required', 'string'],
             'equip' => ['required', 'string'],
@@ -49,19 +50,29 @@ class HostTmntController extends Controller
     }
     public function create(Request $request)
     {
+        // echo $request->Name; echo '||';
+        // echo $request->sport_id;echo '||';
+        // echo $request->category_id;echo '||';
+        // echo $request->gtype_id;echo '||';
+        // echo $request->reg_fees;echo '||';
+        // echo $request->total_teams;echo '||';
+        // echo $request->old;echo '||';
+        // echo $request->equip;echo '||';
         $id=Auth::user()->id;
-        $this->validator($request->all())->validate();
+        //$this->validator($request->all())->validate();
+        // echo $request->Name;
+        // exit(0);
         $tmnt=tournament::create([
             'Name'=>$request['Name'],
             'host_id'=>$id,
             'sport_id'=>$request['sport_id'],
             'gtype_id'=>$request['gtype_id'],
             'category_id'=>$request['category_id'],
-            'pool_size'=>$request['pool_size'],
-            'half_time' => $request['half_time'],            
-            'break_time' => $request['break_time'],
+            //'pool_size'=>$request['pool'],
+            // 'half_time' => $request['half_time'],            
+            // 'break_time' => $request['break_time'],
             'reg_fees' => $request['reg_fees'],
-            'duration' => $request['duartion'],
+            // 'duration' => $request['duartion'],
             'total_teams'=>$request['total_teams'],
             'new_old' => $request['old'],
             'equipments' => $request['equip'],

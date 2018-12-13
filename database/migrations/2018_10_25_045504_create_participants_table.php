@@ -19,8 +19,8 @@ class CreateParticipantsTable extends Migration
             $table->string('last_name');
             $table->integer('tournament_Id');
             $table->tinyInteger('team_Id');
-            $table->binary('photo')->nullable();
-            $table->binary('signature')->nullable();
+            $table->text('photo')->nullable();
+            $table->text('signature')->nullable();
             $table->string('contact');
             $table->timestamps();
         });

@@ -50,7 +50,7 @@
 </header>
   <div  class="container " style="height:relative; width:50%">
     <h1 class="white-text center">Tournament Form</h1>
-    <form action="{{route('tmnt.create')}}" class="center">
+    <form method="POST" action="{{route('tmnt.create')}}" class="center" onsubmit="return validateForm()"> {{ csrf_field() }}
         <div class="row">
             <div class="input-field col s12 {{ $errors->has('Name') ? ' has-error' : '' }} white-text">
                 <input id="Name" type="text" class="validate" name="Name" value="{{ old('Name') }}" required>
@@ -67,7 +67,7 @@
     <div class="row">
         <div class="input-field white-text col s3 m6 {{ $errors->has('sport_id') ? ' has-error' : '' }}">
             <select name="sport_id" id="sport_id" >
-              <option class="black-text" value="" disabled selected>Choose your option</option>
+              <option class="black-text" value="Choose your option" disabled selected>Choose your option</option>
               <option class="black-text" id="s1" value="1">Football</option>
               <option class="black-text" id="s2" value="2">Handball</option>
               <option class="black-text" id="s2" value="3">Hockey</option>
@@ -83,7 +83,7 @@
           </div>
       <div class="input-field white-text col s3 m6 {{ $errors->has('gtype_id') ? ' has-error' : '' }}">
         <select name="gtype_id" id="gtype_id">
-          <option value="" disabled selected>Choose your option</option>
+          <option value="Choose your option" disabled selected>Choose your option</option>
           <option id="t1" value="1">7-aside</option>
           <option id="t2" value="2">11-aside</option>
         </select>
@@ -100,7 +100,7 @@
     <div class="row">
       <div class="input-field white-text col s3 m6 {{ $errors->has('category_id') ? ' has-error' : '' }}">
         <select name="category_id" id="category_id">
-          <option value="" disabled selected>Choose your option</option>
+          <option value="Choose your option" disabled selected>Choose your option</option>
           <option value="1" >Under21</option>
           <option value="2" >Opens</option>
         </select>
@@ -113,24 +113,20 @@
                       </div>
                   @endif
       </div>
-    
-      <div class="input-field white-text col s3 m6 {{ $errors->has('pool') ? ' has-error' : '' }}">
-        <select name="pool" id="pool">
-          <option value="" disabled selected>Choose your option</option>
-          <option value="3" >3</option>
-          <option value="4" >4</option>
-        </select>
-          <label>Pool Size</label>
-          @if ($errors->has('pool'))
-                      <div class="col s12">
-                          <span class="red-text">
-                              <strong>{{ $errors->first('pool') }}</strong>
-                          </span>
-                      </div>
-                  @endif
+      <div class="input-field col s6 {{ $errors->has('reg_fees') ? ' has-error' : '' }} white-text">
+        <input id="reg_fees" type="text" class="validate" name="reg_fees" value="{{ old('reg_fees') }}" required>
+        <label for="reg_fees">Registration Fees</label>
+          @if ($errors->has('reg_fees'))
+              <div class="col s12">
+                  <span class="red-text">
+                      <strong>{{ $errors->first('reg_fees') }}</strong>
+                  </span>
+              </div>
+          @endif
       </div>
+      
     </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="input-field white-text col s3 m6 {{ $errors->has('half_time') ? ' has-error' : '' }}">
           <select name="half_time" id="half_time">
             <option value="" disabled selected>Choose your option</option>
@@ -165,21 +161,11 @@
                         </div>
                     @endif
         </div>
-      </div>
+      </div> --}}
       <div class="row">
-          <div class="input-field col s6 {{ $errors->has('reg_fees') ? ' has-error' : '' }} white-text">
-                  <input id="reg_fees" type="text" class="validate" name="reg_fees" value="{{ old('reg_fees') }}" required>
-                  <label for="reg_fees">Registration Fees</label>
-                    @if ($errors->has('reg_fees'))
-                        <div class="col s12">
-                            <span class="red-text">
-                                <strong>{{ $errors->first('reg_fees') }}</strong>
-                            </span>
-                        </div>
-                    @endif
-                </div>
+          
         
-                <div class="input-field col s6 {{ $errors->has('duration') ? ' has-error' : '' }} white-text">
+                {{-- <div class="input-field col s6 {{ $errors->has('duration') ? ' has-error' : '' }} white-text">
                     <input id="duration" type="text" class="validate" name="duration" value="{{ old('duration') }}" required>
                     <label for="duration">Duration(Days)</label>
                       @if ($errors->has('duration'))
@@ -189,7 +175,7 @@
                               </span>
                           </div>
                       @endif
-                  </div>
+                  </div> --}}
         </div>
     <div class="row">
       {{-- <div class="input-field white-text col s3 m4">
@@ -206,10 +192,10 @@
           </div>
           <div class="input-field white-text col s3 m4 {{ $errors->has('total_teams') ? ' has-error' : '' }}">
               <select name="total_teams" id="total_teams">
-                <option value="" disabled selected>Choose your option</option>
-                <option value="12" >12</option>
-                <option value="24" >24</option>
-                <option value="36" >36</option>
+                <option value="Choose your option" disabled selected>Choose your option</option>
+                <option value="8" >8</option>
+                <option value="16" >16</option>
+                <option value="32" >32</option>
               </select>
                 <label>Max Teams</label>
                 @if ($errors->has('total_teams'))
@@ -253,17 +239,26 @@
               <button type="submit" class="black btn waves-effect waves-light"><i class="material-icons right">send</i>Create</button>
       </div>
     </div>
-  </div>
-    </form>
+</form>
+</div>
 
-  </div>
   <script>
-  $(document).ready(function() {
-  $('select').material_select();
-  $('#seed').hide();
-  });
-  $('#chkbx').click(function(){
-    $('#seed').toggle();
-  });
+    $(document).ready(function() {
+    $('select').material_select();
+    $('#seed').hide();
+    });
+    $('#chkbx').click(function(){
+        $('#seed').toggle();
+    });
+    function validateForm(){
+        var c=document.getElementById('category_id').value;
+        var s=document.getElementById('sport_id').value;
+        var g=document.getElementById('gtype_id').value;
+        var t=document.getElementById('total_teams').value;
+        if(c=='Choose your option' || s=='Choose your option' || g=='Choose your option' || t=='Choose your option'){
+            Materialize.toast('Selection List Value Not Appropriate ! ', 3000, 'rounded red');
+            return false;
+        }
+    }
   </script>
 @endsection

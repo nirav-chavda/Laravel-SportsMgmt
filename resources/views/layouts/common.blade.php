@@ -1,5 +1,8 @@
 <html>
 <head>
+
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!--Import Google Icon Font-->
         <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
         <link type="text/css" rel="stylesheet" href="/css/material-icons.css">
@@ -8,11 +11,11 @@
         <!--Import materialize.css-->
          <!-- Compiled and minified CSS -->
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">-->
-
         <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
         
-        <script type="text/javascript" src="/js/jquery.min.js"></script>
-            <script type="text/javascript" src="/js/materialize.min.js"></script>
+        <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
+        {{-- <script type="text/javascript" src="{{ asset('/js/jquery-2.1.1.min.js') }}"></script> --}}
+        <script type="text/javascript" src="{{ asset('/js/materialize.min.js') }}"></script>
 </head>
 <body class="grey darken-4">
     
@@ -55,12 +58,49 @@
                 Materialize.toast("{{ Session::get('message')['msg'] }}", 4000, "{{ Session::get('message')['class'] }}");
             </script>
             @endif
-            @if(Session::has('message'))
-              @if(message::has('class')=='green')
-                <script>
-                  $('#players').show();
-                </script>
-              @endif
-            @endif
+            
+            <script>
+              function checkTeamName(t_id){
+
+                //alert(t_id + " " + typeof(t_id));
+                
+                var team=document.getElementById('team_name').value;
+
+                if(team!="") {
+
+                    var t_id = parseInt(t_id);
+
+                    $.ajaxSetup({
+                          headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          }
+                      });
+                      $.ajax({
+                          type:'POST',
+                          url:'{{route('team.check')}}',
+                          data: {
+                            id : t_id,
+                            team_name : team
+                          },
+                          success:function(response){
+                              console.log(response);
+                              if(response['status']=='success') {
+                                $("#players").show();
+                                $("#team-id").val(response['id']);
+                                Materialize.toast('Team Name Registered', 3000, 'rounded green');
+                                $("label").attr("data-error","Enter Different Name");
+                              } else { 
+                                Materialize.toast('Try Another Name', 3000, 'rounded red');
+                              }
+                          },
+                          error:function(response){
+                              console.log(response);
+                              //alert('Something went wrong !');
+                              Materialize.toast('Something Went Wrong. Try Again Later ! ', 3000, 'rounded')
+                          }
+                    });
+                }        
+            }
+            </script>
 </body>
 </html>

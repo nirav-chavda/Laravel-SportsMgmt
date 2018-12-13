@@ -50,7 +50,7 @@
                     <ul class="tabs tabs-transparent">
                       <li class="tab"><a id="btn1" class="active" href="#details">Details</a></li>
                       <li class="tab"><a id="btn2" href="#test2">Teams</a></li>
-                      <li class="tab"><a id="btn3" href="#test3">Pools</a></li>
+
                       <li class="tab"><a id="btn4" href="#test4">Fixtures</a></li>
                     </ul>
             </div>            
@@ -58,17 +58,240 @@
     </header>
     <main>
             <div class="container" id="details" style="min-height:400px">
-                    <div class="container">
+                    <div class="container" style="height:50%">
                         <h2 class="white-text center">Venue And Date</h2>
-                        <input type="text" class="datepicker">
-                        <input type="text" class="timepicker">
+                        @if($tmnt->venue==NULL && $tmnt->start_date==NULL)
+                            <form action="{{route('add.venue',$tmnt->id)}}" method="POST">
+                                    <div class="row center" style="margin-left:25%">
+                                        <div class="input-field col s8 white-text">
+                                            <input id="date" name="date" type="text" class="datepicker" >
+                                            <label for="date">Select Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-left:25%">
+                                        <div class="white-text input-field col s8 {{ $errors->has('venue') ? ' has-error' : '' }} white-text">
+                                            <input id="venue" type="text" class="validate" name="venue" value="{{ old('venue') }}" required>
+                                            <label for="venue">Venue</label>
+                                                @if ($errors->has('venue'))
+                                                    <div class="col s12">
+                                                        <span class="red-text">
+                                                            <strong>{{ $errors->first('venue') }}</strong>
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                        </div>
+                                    </div>
+                                    {{csrf_field()}}
+                                    <button style="margin-left:40%; margin-bottom:30px;" class=" center btn white-text black ">Submit</button>
+                            </form>
+                        @else
+                        <div class="row">
+                            <h3 class="white-text">Venue : {{$tmnt->venue}}</h3>
+                        </div>
+                        <div class="row">
+                            <h3 class="white-text">Date : {{$tmnt->start_date}}</h3>
+                        </div>
+                        @endif
                     </div>
                 </div>
-                <div class="container" id="teams" style="min-height:400px">
-                        <h1 class="white-text">teams Container</h1>
-                </div>
-                <div class="container" id="pools" style="min-height:400px">
-                        <h1 class="white-text">pools Container</h1>
+                <div class="container center" id="teams" style="min-height:400px">
+                    @if(count($teamUS)>0 && $tmnt->new_old==1)
+                    <div style="margin:30px">
+                            <form action="{{route('seed.upload',$tmnt->id)}}" method="POST">
+                            <table class="centered striped">
+                                <thead class="white-text black">
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Seeding</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="grey lighten-2">
+                                    @php
+                                        $i=1;
+                                    @endphp
+                                    @foreach($teamUS as $t)
+                                    <tr class="">
+                                        <td>{{$t->name}}</td>
+                                        {{-- <td>{{$i}}</td> --}}
+                                        <td>
+                                            {{$i}}
+                                        </td>
+                                        <input type="hidden" name="t{{$i}}" id="t{{$i}}" value="{{$t->name}}">
+                                        <input type="hidden" name="s{{$i}}" id="s{{$i}}" value="{{$i}}">
+                                    </tr>
+                                    @php
+                                        $i++;
+                                    @endphp
+                                    @endforeach
+                                    
+                                </tbody>                            
+                            </table><br>
+                            {{csrf_field()}}
+                            <button class="btn black white-text" type="submit"> Confirm</button>
+                                        {{-- <button class="btn white-text black" type="submit">Upload Seeding</button> --}}
+                                    </form>
+                            <div class="container">
+                                    
+                                        @for($i=1;$i<=count($teamUS);$i++)
+                                            
+                                        @endfor
+                                        {{-- <input type="submit" value="SUBMIT"> --}}<br>
+                                        {{csrf_field()}}
+                                        
+                                </div>
+                            
+                        </div>
+                    @elseif(count($teamUS)>0 && $tmnt->new_old==2)
+                    <div id="select_seed" style="margin:30px">
+                            <div class="row">
+                                    <div class="input-field white-text col s3 m6 {{ $errors->has('first') ? ' has-error' : '' }}">
+                                        <select name="first" id="first" >
+                                          <option class="black-text" value="Choose your option" disabled selected>Choose your option</option>
+                                          {{-- <option class="black-text" id="s1" value="1">Football</option>
+                                          <option class="black-text" id="s2" value="2">Handball</option>
+                                          <option class="black-text" id="s2" value="3">Hockey</option> --}}
+                                          @foreach($teamUS as $t)
+                                          <option id="{{$t->name}}" value="{{$t->name}}">{{$t->name}}</option>
+                                          @endforeach
+                                        </select>
+                                        <label for="first">Winner</label>
+                                        @if ($errors->has('first'))
+                                                      <div class="col s12">
+                                                          <span class="red-text">
+                                                              <strong>{{ $errors->first('first') }}</strong>
+                                                          </span>
+                                                      </div>
+                                                  @endif
+                                      </div>
+                                  <div class="input-field white-text col s3 m6 {{ $errors->has('second') ? ' has-error' : '' }}">
+                                    <select name="second" id="second">
+                                      <option value="Choose your option" disabled selected>Choose your option</option>
+                                      {{-- <option id="t1" value="1">7-aside</option>
+                                      <option id="t2" value="2">11-aside</option> --}}
+                                      @foreach($teamUS as $t)
+                                      <option id="{{$t->name}}" value="{{$t->name}}">{{$t->name}}</option>
+                                      @endforeach
+                                    </select>
+                                    <label for="second">Runners Up</label>
+                                    @if ($errors->has('second'))
+                                                  <div class="col s12">
+                                                      <span class="red-text">
+                                                          <strong>{{ $errors->first('second') }}</strong>
+                                                      </span>
+                                                  </div>
+                                              @endif
+                                  </div>
+                            </div>
+                            <div class="row">
+                                    <div class="input-field white-text col s3 m6 {{ $errors->has('third') ? ' has-error' : '' }}">
+                                        <select name="third" id="third" >
+                                          <option class="black-text" value="Choose your option" disabled selected>Choose your option</option>
+                                          {{-- <option class="black-text" id="s1" value="1">Football</option>
+                                          <option class="black-text" id="s2" value="2">Handball</option>
+                                          <option class="black-text" id="s2" value="3">Hockey</option> --}}
+                                          @foreach($teamUS as $t)
+                                          <option id="{{$t->name}}" value="{{$t->name}}">{{$t->name}}</option>
+                                          @endforeach
+                                        </select>
+                                        <label for="third">Third Place</label>
+                                        @if ($errors->has('third'))
+                                                      <div class="col s12">
+                                                          <span class="red-text">
+                                                              <strong>{{ $errors->first('third') }}</strong>
+                                                          </span>
+                                                      </div>
+                                                  @endif
+                                      </div>
+                                  <div class="input-field white-text col s3 m6 {{ $errors->has('fourth') ? ' has-error' : '' }}">
+                                    <select name="fourth" id="fourth">
+                                      <option value="Choose your option" disabled selected>Choose your option</option>
+                                      {{-- <option id="t1" value="1">7-aside</option>
+                                      <option id="t2" value="2">11-aside</option> --}}
+                                      @foreach($teamUS as $t)
+                                      <option id="{{$t->name}}" value="{{$t->name}}">{{$t->name}}</option>
+                                      @endforeach
+                                    </select>
+                                    <label for="fourth">Fourth Place</label>
+                                    @if ($errors->has('fourth'))
+                                                  <div class="col s12">
+                                                      <span class="red-text">
+                                                          <strong>{{ $errors->first('fourth') }}</strong>
+                                                      </span>
+                                                  </div>
+                                              @endif
+                                  </div>
+                            </div>
+                            <div class="row center">
+                                    <div class="input-field col s12 center">
+                                            <button id="confirm_seed" class="black btn waves-effect waves-light"><i class="material-icons right">send</i>Confirm</button>
+                                    </div>
+                            </div>
+                    </div>
+                    <div style="margin:30px;">
+                            <div class="container center" id="seeding" style="margin-top:30px">
+                                {{-- <table class="centered striped">
+                                    <thead class="black white-text">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Seeding</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="grey lighten-2">
+                                        
+                                        <tr>
+                                            <td id="first_seed"></td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="second_seed"></td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="third_seed"></td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="fourth_seed"></td>
+                                            <td>4</td>
+                                        </tr>
+                                    </tbody>
+                                </table> --}}
+                            </div>
+                            <div class="container" id="form-con">
+                                <form action="{{route('seed.upload',$tmnt->id)}}" method="POST">
+                                    @for($i=1;$i<=count($teamUS);$i++)
+                                        <input type="hidden" name="t{{$i}}" id="t{{$i}}" value="">
+                                        <input type="hidden" name="s{{$i}}" id="s{{$i}}" value="{{$i}}">
+                                    @endfor
+                                    {{-- <input type="submit" value="SUBMIT"> --}}<br>
+                                    {{csrf_field()}}
+                                    <button class="btn white-text black" type="submit">Upload Seeding</button>
+                                </form>
+                            </div>
+                    </div>
+                    @elseif(count($teamS)>0)
+                        <div style="margin:30px">
+                            <table class="centered striped">
+                                @php
+                                    
+                                @endphp
+                                <thead class="white-text black">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Seeding</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="grey lighten-3">
+                                    @foreach($teamS as $t)
+                                    <tr>
+                                        <td>{{$t->name}}</td>
+                                        <td>{{$t->seeding}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
                 <div class="container" id="fixtures" style="min-height:400px">
                         <h1 class="white-text">fixtures Container</h1>
@@ -76,27 +299,117 @@
     </main>
     <script type="text/javascript">
         $(document).ready(function(){
+            var select_array = {id1:"",id2:"",id3:"",id4:""};
+            $("#form-con").hide();
             $("#details").show(1000);
             $("#teams").hide();
-            $("#pools").hide();
             $("#fixtures").hide();
+            $('select').material_select();
+            $('#seeding').hide();
+            //$("select").children("option[value='nirav']").prop("disabled", true);
+            // $("select").change(function () {
+            //     //alert($(this).val());
+            //     $("select option").attr("disabled", false);
+            //     $("select").not($(this)).children("option[value='" + $(this).val() + "']").attr("disabled", true);
+            //     $('select').material_select();
+            // }); 
+
+            $('select').change(function(){                
+
+                $("#first").children("option[value='" + select_array.id2 + "'],[value='" + select_array.id3 + "'],[value='" + select_array.id4 + "']").attr("disabled", false);
+                $("#second").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id3 + "'],[value='" + select_array.id4 + "']").attr("disabled", false);
+                $("#third").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id2 + "'],[value='" + select_array.id4 + "']").attr("disabled", false);
+                $("#fourth").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id2 + "'],[value='" + select_array.id3 + "']").attr("disabled", false);
+
+                var selected_id = $(this).attr('id');
+
+                if(selected_id=="first") {
+                    select_array.id1 = $(this).val();
+                    //document.getElementById('first_seed').html=select_array.id1;    
+                    $('#t1').val(select_array.id1);
+                   // alert($("#t1").val());
+                }
+                else if(selected_id=="second") {
+                    select_array.id2 = $(this).val();
+                    $('#t2').val(select_array.id2);
+                }
+                else if(selected_id=="third") {
+                    select_array.id3 = $(this).val();
+                    $('#t3').val(select_array.id3);
+                }
+                else if(selected_id=="fourth") {
+                    select_array.id4 = $(this).val();
+                    $('#t4').val(select_array.id4);
+                }   
+
+                var count=5;
+                var table = `<table class="centered striped"><thead class="black white-text">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Seeding</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="grey lighten-2"><tr>
+                                            <td id="first_seed">`+select_array.id1+`</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="second_seed">`+select_array.id2+`</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="third_seed">`+select_array.id3+`</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="fourth_seed">`+select_array.id4+`</td>
+                                            <td>4</td>
+                                        </tr>`;
+                @foreach($teamUS as $team)
+                    if( ("{{$team->name}}" != select_array.id1) && ("{{$team->name}}" != select_array.id2) && ("{{$team->name}}" != select_array.id3) && ("{{$team->name}}" != select_array.id4)) {
+                        //alert("{{$team->name}}" + select_array.id1);
+                        table += "<tr><td>"+"{{ $team->name }}" + "</td><td>"+ count +"</td></tr>";
+                        $("#t"+count).val("{{$team->name}}");
+                        count++;
+                    }
+                @endforeach
+                table += "</tbody></table>";
+                $("#seeding").html(table);
+
+                $("#first").children("option[value='" + select_array.id2 + "'],[value='" + select_array.id3 + "'],[value='" + select_array.id4 + "']").attr("disabled", true);
+                $("#second").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id3 + "'],[value='" + select_array.id4 + "']").attr("disabled", true);
+                $("#third").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id2 + "'],[value='" + select_array.id4 + "']").attr("disabled", true);
+                $("#fourth").children("option[value='" + select_array.id1 + "'],[value='" + select_array.id2 + "'],[value='" + select_array.id3 + "']").attr("disabled", true);
+
+                $('select').material_select();
+                    
+            });
+        });
+            
+        $('#confirm_seed').click(function(){
+            var bool='';
+            var c=document.getElementById('first').value;
+                var s=document.getElementById('second').value;
+                var g=document.getElementById('third').value;
+                var t=document.getElementById('fourth').value;
+                if(c=='Choose your option' || s=='Choose your option' || g=='Choose your option' || t=='Choose your option'){
+                    Materialize.toast('Selection List Value Not Appropriate ! ', 3000, 'rounded red');
+                    bool= false;
+                }else{
+            $('#confirm_seed').hide();
+            $('#seeding').show();
+            
+            $("#form-con").show();
+            }
         });
         $("#btn1").click(function(){
-            $("#details").show(1000);
+            $("#details").show(500);
             $("#teams").hide();
-            $("#pools").hide();
             $("#fixtures").hide();
         });
         $("#btn2").click(function(){
             $("#details").hide();
             $("#teams").show(1000);
-            $("#pool").hide();
-            $("#fixtures").hide();
-        });
-        $("#btn3").click(function(){
-            $("#details").hide();
-            $("#teams").hide();
-            $("#pools").show(1000);
             $("#fixtures").hide();
         });
         $("#btn4").click(function(){
@@ -105,6 +418,7 @@
             $("#pools").hide();
             $("#fixtures").show(1000);
         });
+       
     </script>
     <script>
         $('.datepicker').pickadate({
@@ -113,7 +427,7 @@
             today: 'Today',
             clear: 'Clear',
             close: 'Ok',
-            closeOnSelect: false // Close upon selecting a date,
+            closeOnSelect: false, // Close upon selecting a date,
             container: undefined, // ex. 'body' will append picker to body
         });
         $('.timepicker').pickatime({
