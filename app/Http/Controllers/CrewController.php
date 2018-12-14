@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\tournament;
+use App\fixture;
 
 class CrewController extends Controller
 {
@@ -19,9 +21,9 @@ class CrewController extends Controller
 
     public function index()
     {
-        $tmntsF=tournament::all()->where('isAdmin',1);
-        $tmntsH=tournament::all()->where('isCrew',1);
-        $tmntsK=tournament::all()->where('isHost',1);
+        $tmntsF=tournament::all()->where('sport_id',1);
+        $tmntsH=tournament::all()->where('sport_id',2);
+        $tmntsK=tournament::all()->where('sport_id',3);
         return view('pages.crew-home')->with(['tmntsF'=>$tmntsF,'tmntsH'=>$tmntsH,'tmntsK'=>$tmntsK]);
     }
 
@@ -54,7 +56,7 @@ class CrewController extends Controller
      */
     public function show($id)
     {
-        $tmnt=tournament::all()->where('Tournament_Id',$id);
+        $tmnt=tournament::all()->where('id',$id);
         return view('pages.crew-tournaments')->with('tmnt',$tmnt);
     }
 

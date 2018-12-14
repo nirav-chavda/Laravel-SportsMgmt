@@ -97,7 +97,7 @@
                 <div class="container center" id="teams" style="min-height:400px">
                     @if(count($teamUS)>0 && $tmnt->new_old==1)
                     <div style="margin:30px">
-                            <form action="{{route('seed.upload',$tmnt->id)}}" method="POST">
+                        <form action="{{ route('upload.seed',$tmnt->id) }}" method="POST">
                             <table class="centered striped">
                                 <thead class="white-text black">
                                     <tr>
@@ -129,18 +129,8 @@
                             {{csrf_field()}}
                             <button class="btn black white-text" type="submit"> Confirm</button>
                                         {{-- <button class="btn white-text black" type="submit">Upload Seeding</button> --}}
-                                    </form>
-                            <div class="container">
-                                    
-                                        @for($i=1;$i<=count($teamUS);$i++)
-                                            
-                                        @endfor
-                                        {{-- <input type="submit" value="SUBMIT"> --}}<br>
-                                        {{csrf_field()}}
-                                        
-                                </div>
-                            
-                        </div>
+                        </form>                            
+                    </div>
                     @elseif(count($teamUS)>0 && $tmnt->new_old==2)
                     <div id="select_seed" style="margin:30px">
                             <div class="row">
@@ -258,7 +248,7 @@
                                 </table> --}}
                             </div>
                             <div class="container" id="form-con">
-                                <form action="{{route('seed.upload',$tmnt->id)}}" method="POST">
+                                <form action="{{route('upload.seed',$tmnt->id)}}" method="POST">
                                     @for($i=1;$i<=count($teamUS);$i++)
                                         <input type="hidden" name="t{{$i}}" id="t{{$i}}" value="">
                                         <input type="hidden" name="s{{$i}}" id="s{{$i}}" value="{{$i}}">
@@ -293,8 +283,12 @@
                         </div>
                     @endif
                 </div>
-                <div class="container" id="fixtures" style="min-height:400px">
-                        <h1 class="white-text">fixtures Container</h1>
+                <div class="container grey darken-3" id="fixtures" style="min-height:550px;">
+                    @if(count($teamS)>0)
+                   <div id="displayFixture" class="grey"></div>
+                   @else
+                   <h2 class="white-text">Seed Teams First</h2>
+                   @endif
                 </div>
     </main>
     <script type="text/javascript">
@@ -440,7 +434,62 @@
     container: undefined, // ex. 'body' will append picker to body
     autoclose: false, // automatic close timepicker
     ampmclickable: true, // make AM PM clickable
-    aftershow: function(){} //Function for after opening timepicker
+    after: function(){} //Function for after opening timepicker
   });
+    </script>
+    <script>
+
+        @if(isset($fixture))
+
+            var team_data = "";
+            var flag1,flag2;
+
+            @foreach($fixture as $obj)
+                @if($obj->match_id<=8)
+                    flag1='<?php echo $obj->team1_id; ?>';                      
+                    flag2='<?php echo $obj->team2_id; ?>';
+                    if(flag1=="") {
+                        flag1=null;
+                    } 
+                    if(flag2=="") {
+                        flag2=null;
+                    } 
+                    team_data.push(new Array(flag1,flag2));
+                @endif
+            @endforeach 
+
+            var data= {
+                teams:[
+
+                    // ["team1",null],
+                    // ["team8","team9"],
+                    // ["team4",null],
+                    // ["team5",null],
+                    // ["team2",null],
+                    // ["team3",null],
+                    // ["team6",null],
+                    // ["team7","team10"],
+                    //team_data
+                    
+                ],
+                 results:[
+                //     [
+                //         [null,null],[3,2],[null,null],[null,null],[null,null],[null,null],[null,null],[5,0],
+                //     ],
+                //     [
+                //         [1,2],[0,2],[3,5],[1,0],
+                //     ],
+                //     [
+                //         [3,2],[0,1],
+                //     ],
+                //     [
+                //         [1,2],[2,5],
+                //     ]
+                 ]
+            }
+            $('#displayFixture').bracket({
+                init: data
+            });
+        @endif
     </script>
 @endsection

@@ -13,7 +13,7 @@
   <header>
       <nav class="navbar black">
           <div class="nav-wrapper">
-              <a class="brand-logo" href="{{ url('/tournaments') }}" style="font-size:75px">
+              <a class="brand-logo center" href="{{ url('/tournaments') }}" style="font-size:75px">
                 <span class="deep-purple darken-3">P</span>lan<span class="deep-purple darken-3">I</span>t  <span class=" red accent-4">4</span> <span class=" green accent-4">Y</span>ou
               </a>
               <ul class="right">

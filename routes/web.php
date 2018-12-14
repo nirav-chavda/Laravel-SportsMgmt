@@ -66,7 +66,7 @@ Route::prefix('host')->group(function(){
         ]
     ]);
     Route::get('/tournament/{id}/info','HostController@show')->name('tournament.home');
-    Route::post('/tournament/{id}/info','HostController@seedUpload')->name('seed.upload');
+    Route::post('/tournament/seed/{id}/info','HostController@seedUpload')->name('upload.seed');
     Route::post('/tournament/{id}/info','HostController@addVenueDate')->name('add.venue');
     Route::get('/t_form','HostTmntController@index');
     Route::post('/t_form','HostTmntController@create')->name('tmnt.create');
@@ -84,5 +84,6 @@ Route::prefix('crew')->group(function(){
             'index'=>'crew.home'
         ]
     ]);
+    Route::get('/home/tournaments/{id}/info', 'CrewController@show')->name('result.home');
 });
 

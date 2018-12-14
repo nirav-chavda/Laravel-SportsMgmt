@@ -179,16 +179,8 @@
                       </div>
                     </li>
                     <li>
-                      <div class="collapsible-header black white-text"><i class="material-icons">apps</i>Pools</div>
-                      <div class="collapsible-body grey lighten-3"><span>Lorem ipsum dolor sit amet.</span></div>
-                    </li>
-                    <li>
                       <div class="collapsible-header black white-text"><i class="material-icons">format_list_bulleted</i>Fixtures</div>
                       <div class="collapsible-body grey lighten-3"><span>Lorem ipsum dolor sit amet.</span></div>
-                    </li>
-                    <li>
-                            <div class="collapsible-header black white-text"><i class="material-icons">import_contacts</i>Results</div>
-                            <div class="collapsible-body grey lighten-3"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                   </ul>
     </div>

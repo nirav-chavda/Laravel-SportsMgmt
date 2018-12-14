@@ -15,16 +15,14 @@ class CreateFixturesTable extends Migration
     {
         Schema::create('fixtures', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tournament_Id');
-            $table->tinyInteger('round_Id');
-            $table->date('f_date')->nullable();
-            $table->time('f_time')->nullable();
-            $table->smallInteger('team#1_id');
-            $table->smallInteger('team#2_id');
-            $table->tinyInteger('team#1_goals');
-            $table->tinyInteger('team#2_goals');
-            $table->smallInteger('winner_id');
-            $table->smallInteger('loser_id');
+            $table->integer('tournament_id')->nullable();
+            $table->tinyInteger('match_id')->nullable();
+            $table->smallInteger('team#1_id')->nullable();
+            $table->smallInteger('team#2_id')->nullable();
+            $table->tinyInteger('team#1_goals')->nullable();
+            $table->tinyInteger('team#2_goals')->nullable();
+            $table->smallInteger('winner_id')->nullable();
+            $table->smallInteger('loser_id')->nullable();
             $table->timestamps();
         });
     }

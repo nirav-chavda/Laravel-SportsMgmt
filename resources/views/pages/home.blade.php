@@ -115,9 +115,9 @@
             </div>
         </div>
         <div class="container red darken-3" style="width:75%; padding-bottom:4%">
-                <h1 class="white-text center">Hockey Tournaments</h1>
+                <h1 class="white-text center">Handball Tournaments</h1>
                 <div class="container red lighten-2 " style="width:85%">
-                   @if(count($tmntsK)>0)
+                   @if(count($tmntsH)>0)
                    <table class="highlight bordered centered" id="handball">
                         <thead class="black white-text">
                             <tr>
@@ -135,28 +135,28 @@
                            @php
                               $i=1; 
                            @endphp 
-                            @foreach($tmntsKs as $tmnt)
+                            @foreach($tmntsH as $tmnt)
                              <tr>
                                         <td>{{$i}}</td>
                                         <td>{{$tmnt->Name}}</td>
                                         <td>
-                                            @if($tmnt->Gtype_Id===1)
+                                            @if($tmnt->gtype_Id===1)
                                                 7_Aside
                                             @else
                                                 11_Aside
                                             @endif
                                         </td>
                                         <td>
-                                            @if($tmnt->Category_Id===1)
+                                            @if($tmnt->category_Id===1)
                                                 Under 21
                                             @else
                                                 Opens
                                             @endif
                                         </td>
-                                        <td>{{$tmnt->RegFees}}</td>
-                                        <td>{{$tmnt->Start_Date}}</td>
-                                        <td>{{$tmnt->Venue}}</td>
-                                        <td><a href="/tournaments/{{$tmnt->Tournament_Id}}/info" class="btn red darken-2">Go!</a></td>
+                                        <td>{{$tmnt->reg_fees}}</td>
+                                        <td>{{$tmnt->start_date}}</td>
+                                        <td>{{$tmnt->venue}}</td>
+                                        <td><a href="/tournaments/{{$tmnt->id}}/info" class="btn red darken-2">Go!</a></td>
                              </tr>
                              @php
                                  $i++;
@@ -170,7 +170,7 @@
                 </div>
             </div>
             <div class="container green darken-3" style="width:75%; padding-bottom:4%">
-                    <h1 class="white-text center">Handball Tournaments</h1>
+                    <h1 class="white-text center">Hockey Tournaments</h1>
                     <div class="container green lighten-2 " style="width:80%">
                         @if(count($tmntsK)>1)
                            <table class="highlight bordered centered" id="handball">
@@ -190,28 +190,28 @@
                                        @php
                                           $i=1; 
                                        @endphp 
-                                    @foreach($tmntsH as $tmnt)
+                                    @foreach($tmntsK as $tmnt)
                                     <tr>
                                         <td>{{$i}}</td>
                                         <td>{{$tmnt->Name}}</td>
                                         <td>
-                                            @if($tmnt->Gtype_Id===1)
+                                            @if($tmnt->gtype_Id===1)
                                                 7_Aside
                                             @else
                                                 11_Aside
                                             @endif
                                         </td>
                                         <td>
-                                            @if($tmnt->Category_Id===1)
+                                            @if($tmnt->category_Id===1)
                                                 Under 21
                                             @else
                                                 Opens
                                             @endif
                                         </td>
-                                        <td>{{$tmnt->RegFees}}</td>
-                                        <td>{{$tmnt->Start_Date}}</td>
-                                        <td>{{$tmnt->Venue}}</td>
-                                        <td><a href="/tournaments/{{$tmnt->Tournament_Id}}/info" class="btn green darken-1">Go!</a></td>
+                                        <td>{{$tmnt->reg_fees}}</td>
+                                        <td>{{$tmnt->start_date}}</td>
+                                        <td>{{$tmnt->venue}}</td>
+                                        <td><a href="/tournaments/{{$tmnt->id}}/info" class="btn green darken-1">Go!</a></td>
                                     </tr>
                                     @php
                                         $i++;

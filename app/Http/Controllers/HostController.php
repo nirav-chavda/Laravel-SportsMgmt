@@ -8,6 +8,7 @@ use App\User;
 use Auth;
 use App\tournament;
 use App\team;
+use App\fixture;
 
 class HostController extends Controller
 {
@@ -44,8 +45,27 @@ class HostController extends Controller
             // $flag2=${'s'.$i};
             $seeding=team::where('name',$request['t'.$i])->update(['seeding'=>$request['s'.$i]]);
         }
-        \Session::flash('message', ['msg'=>'Seeding Complete!!', 'class'=>'green']);
 
+        $arr_fixture = $this->fixtureMaking($id);
+        for($i=0;$i<count($arr_fixture);$i++) {
+            fixture::create([
+                'tournament_id' => $id,
+                'match_id' => $i+1,
+                'team1_id' => $arr_fixture[$i][0],
+                'team2_id' => $arr_fixture[$i][1]
+            ]);
+        }
+
+        for($i=8;$i<16;$i++) {
+            fixture::create([
+                'tournament_id' => $id,
+                'match_id' => $i+1,
+                'team1_id' => NULL,
+                'team2_id' => NULL
+            ]);
+        }
+
+        \Session::flash('message', ['msg'=>'Seeding Complete!!', 'class'=>'green']);
         return redirect()->route('tournament.home',$id);
     }
 
@@ -54,6 +74,10 @@ class HostController extends Controller
         \Session::flash('message', ['msg'=>'Venue & Date Added!!', 'class'=>'green']);
 
         return redirect()->route('tournament.home',$id);
+    }
+
+    public function fixtureData(){
+        //
     }
 
     /**
@@ -78,7 +102,94 @@ class HostController extends Controller
         $tmnt=tournament::where('id',$id)->first();
         $teamUS=team::all()->where('tournament_Id',$id)->where('seeding',NULL);
         $teamS=team::all()->where('tournament_Id',$id)->where('seeding','!=',NULL)->sortBy('seeding');
-        return view('pages.host-tournament')->with(['tmnt'=>$tmnt, 'teamUS'=>$teamUS, 'teamS'=>$teamS]);
+        $fixture = fixture::all()->where('tournament_id',$id);
+        return view('pages.host-tournament')->with(['tmnt'=>$tmnt, 'teamUS'=>$teamUS, 'teamS'=>$teamS,'fixture'=>$fixture]);
+    }
+
+    public function fixtureMaking($id){
+        $row=0; $bye=0;
+        $team=array();
+        $arr=array();
+        $fixture=array();
+        $teamS=team::all()->where('tournament_Id',$id)->where('seeding','!=',NULL)->sortBy('seeding');
+        if(count($teamS)<=8)
+        {
+            $rows=2;
+            $bye=8-count($teamS);
+        }
+        elseif(count($teamS)>8 && count($teamS)<=16)
+        {
+            $rows=4;
+            $bye=16-count($teamS);
+        }
+        foreach($teamS as $t)
+        {
+            array_push($team,$t->seeding);
+        }
+        for($i=0;$i<$bye;$i++){
+            array_push($team,null);
+        }
+        $index=0;
+        for($i=0;$i<$rows;$i++)
+        {
+            if($i%2!=0)
+            {
+                for($j=3;$j>=0;$j--)
+                {
+                    $arr[$i][$j]=$team[$index++];
+                }
+            }
+            else{
+                for($j=0;$j<4;$j++)
+                {
+                    $arr[$i][$j]=$team[$index++];
+                }
+            }
+        }
+        //print_r($arr);
+        for($i=0;$i<$rows;$i++)
+        {
+            $temp=$arr[$i][1];
+            $arr[$i][1]=$arr[$i][3];
+            $arr[$i][3]=$temp;
+        }
+        //print_r($arr);
+        $try[]=array(array(1,2,3,4),array(5,6,null,null));
+        if(count($arr)==2)
+        {
+            $c=0;
+            for($i=0;$i<$rows;$i++)
+            {
+                for($j=0;$j<4;$j++)
+                {
+                    $fixture[$c]=array($arr[$i][$j],$arr[$i+1][$j]);
+                    $c++;
+                }
+            }
+            //print_r($fixture);
+            print_r($try);
+        }
+        elseif(count($arr)==4)
+        {
+            //print_r($arr);
+            $row=$rows;
+            $l=0;
+            $m=0;
+            for($j=0;$j<$row;$j++)
+            {
+                for($k=0;$k<2;$k++)
+                {
+                    $fixture[$l]=array($arr[$m][$j],$arr[$row-1][$j]);
+                    $l++;
+                    $m++;
+                    $row=$row-1;
+                }
+                $m=0;
+                $row=4;
+            }
+        }
+        
+        return $fixture;
     }
 
     /**

@@ -13,7 +13,7 @@
     <header>
             <nav class="navbar black">
                     <div class="nav-wrapper">
-                        <a class="brand-logo" href="{{ url('/tournaments') }}" style="font-size:75px">
+                        <a class="brand-logo center" href="{{ url('/tournaments') }}" style="font-size:75px">
                           <span class="deep-purple darken-3">P</span>lan<span class="deep-purple darken-3">I</span>t  <span class=" red accent-4">4</span> <span class=" green accent-4">Y</span>ou
                         </a>
                         <ul class="right">
@@ -66,7 +66,6 @@
                                  <th>Name</th>
                                  <th>Type</th>
                                  <th>Category</th>
-                                 <th>Registration Amount</th>
                                  <th>Start Date</th>
                                  <th>Venue</th>
                                  <th></th>
@@ -81,23 +80,22 @@
                                          <td>{{$i}}</td>
                                          <td>{{$tmnt->Name}}</td>
                                          <td>
-                                             @if($tmnt->Gtype_Id===1)
+                                             @if($tmnt->gtype_Id===1)
                                                  7_Aside 
                                              @else
                                                  11_Aside
                                              @endif
                                          </td>
                                          <td>
-                                             @if($tmnt->Category_Id===1)
+                                             @if($tmnt->category_Id===1)
                                                  Under 21
                                              @else
                                                  Opens
                                              @endif
                                          </td>
-                                         <td>{{$tmnt->RegFees}}</td>
-                                         <td>{{$tmnt->Start_Date}}</td>
-                                         <td>{{$tmnt->Venue}}</td>
-                                         <td><a href="/tournaments/{{$tmnt->Tournament_Id}}" class="btn deep-purple darken-1">Go!</a></td>
+                                         <td>{{$tmnt->start_date}}</td>
+                                         <td>{{$tmnt->venue}}</td>
+                                         <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn deep-purple darken-1">Go!</a></td>
                               </tr>
                               @php
                                   $i++;
@@ -121,7 +119,6 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Category</th>
-                                <th>Registration</th>
                                 <th>Start Date</th>
                                 <th>Venue</th>
                                 <th></th>
@@ -136,23 +133,22 @@
                                         <td>{{$i}}</td>
                                         <td>{{$tmnt->Name}}</td>
                                         <td>
-                                            @if($tmnt->Gtype_Id===1)
+                                            @if($tmnt->gtype_Id===1)
                                                 7_Aside
                                             @else
                                                 11_Aside
                                             @endif
                                         </td>
                                         <td>
-                                            @if($tmnt->Category_Id===1)
+                                            @if($tmnt->category_Id===1)
                                                 Under 21
                                             @else
                                                 Opens
                                             @endif
                                         </td>
-                                        <td>{{$tmnt->RegFees}}</td>
-                                        <td>{{$tmnt->Start_Date}}</td>
-                                        <td>{{$tmnt->Venue}}</td>
-                                        <td><a href="/tournaments/{{$tmnt->Tournament_Id}}" class="btn red darken-2">Go!</a></td>
+                                        <td>{{$tmnt->start_date}}</td>
+                                        <td>{{$tmnt->venue}}</td>
+                                        <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn red darken-2">Go!</a></td>
                              </tr>
                              @php
                                  $i++;
@@ -166,7 +162,7 @@
                 </div>
             </div>
             <div class="container green darken-3" style="width:75%; padding-bottom:4%">
-                    <h1 class="white-text center">Handball Tournaments</h1>
+                    <h1 class="white-text center">Hockey Tournaments</h1>
                     <div class="container green lighten-2 " style="width:80%">
                         @if(count($tmntsK)>1)
                            <table class="highlight bordered centered" id="handball">
@@ -176,7 +172,6 @@
                                         <th>Name</th>
                                         <th>Type</th>
                                         <th>Category</th>
-                                        <th>Registration</th>
                                         <th>Start Date</th>
                                         <th>Venue</th>
                                         <th></th>
@@ -191,23 +186,22 @@
                                         <td>{{$i}}</td>
                                         <td>{{$tmnt->Name}}</td>
                                         <td>
-                                            @if($tmnt->Gtype_Id===1)
+                                            @if($tmnt->gtype_Id===1)
                                                 7_Aside
                                             @else
                                                 11_Aside
                                             @endif
                                         </td>
                                         <td>
-                                            @if($tmnt->Category_Id===1)
+                                            @if($tmnt->category_Id===1)
                                                 Under 21
                                             @else
                                                 Opens
                                             @endif
                                         </td>
-                                        <td>{{$tmnt->RegFees}}</td>
-                                        <td>{{$tmnt->Start_Date}}</td>
-                                        <td>{{$tmnt->Venue}}</td>
-                                        <td><a href="/tournaments/{{$tmnt->Tournament_Id}}" class="btn green darken-1">Go!</a></td>
+                                        <td>{{$tmnt->start_date}}</td>
+                                        <td>{{$tmnt->venue}}</td>
+                                        <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn green darken-1">Go!</a></td>
                                     </tr>
                                     @php
                                         $i++;
