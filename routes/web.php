@@ -84,6 +84,6 @@ Route::prefix('crew')->group(function(){
             'index'=>'crew.home'
         ]
     ]);
-    Route::get('/home/tournaments/{id}/info', 'CrewController@show')->name('result.home');
+    Route::get('/tournaments/{id}/info', 'CrewController@show')->name('result.home');
 });
 

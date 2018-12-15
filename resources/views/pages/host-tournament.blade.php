@@ -441,22 +441,26 @@
 
         @if(isset($fixture))
 
-            var team_data = "";
+            var team_data = [];
             var flag1,flag2;
-
+            var count=1;
             @foreach($fixture as $obj)
                 @if($obj->match_id<=8)
                     flag1='<?php echo $obj->team1_id; ?>';                      
                     flag2='<?php echo $obj->team2_id; ?>';
                     if(flag1=="") {
-                        flag1=null;
+                        team_data.push([null,flag2]);
                     } 
                     if(flag2=="") {
-                        flag2=null;
+                        team_data.push([flag1,null]);
+                    }
+                    else{
+                        team_data.push([flag1,flag2])
                     } 
-                    team_data.push(new Array(flag1,flag2));
+                    
                 @endif
             @endforeach 
+            alert(team_data[0]);
 
             var data= {
                 teams:[
@@ -470,21 +474,28 @@
                     // ["team6",null],
                     // ["team7","team10"],
                     //team_data
-                    
+                    team_data[0],
+                    team_data[1],
+                    team_data[2],
+                    team_data[3],
+                    team_data[4],
+                    team_data[5],
+                    team_data[6],
+                    team_data[7]
                 ],
                  results:[
-                //     [
-                //         [null,null],[3,2],[null,null],[null,null],[null,null],[null,null],[null,null],[5,0],
-                //     ],
-                //     [
-                //         [1,2],[0,2],[3,5],[1,0],
-                //     ],
-                //     [
-                //         [3,2],[0,1],
-                //     ],
-                //     [
-                //         [1,2],[2,5],
-                //     ]
+                    // [
+                    //     [null,null],[3,2],[null,null],[null,null],[null,null],[null,null],[null,null],[5,0],
+                    // ],
+                    // [
+                    //     [1,2],[0,2],[3,5],[1,0],
+                    // ],
+                    // [
+                    //     [3,2],[0,1],
+                    // ],
+                    // [
+                    //     [1,2],[2,5],
+                    // ]
                  ]
             }
             $('#displayFixture').bracket({
