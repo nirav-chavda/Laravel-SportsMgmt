@@ -55,8 +55,8 @@ class HostController extends Controller
                 'team2_id' => $arr_fixture[$i][1]
             ]);
         }
-
-        for($i=8;$i<16;$i++) {
+        $extra=count($arr_fixture)*2;
+        for($i=count($arr_fixture);$i<$extra;$i++) {
             fixture::create([
                 'tournament_id' => $id,
                 'match_id' => $i+1,
@@ -64,7 +64,6 @@ class HostController extends Controller
                 'team2_id' => NULL
             ]);
         }
-
         \Session::flash('message', ['msg'=>'Seeding Complete!!', 'class'=>'green']);
         return redirect()->route('tournament.home',$id);
     }
@@ -124,11 +123,13 @@ class HostController extends Controller
         }
         foreach($teamS as $t)
         {
-            array_push($team,$t->seeding);
+            array_push($team,$t->name);
         }
         for($i=0;$i<$bye;$i++){
             array_push($team,null);
         }
+        // print_r($team);
+        // exit(0);
         $index=0;
         for($i=0;$i<$rows;$i++)
         {
@@ -154,20 +155,26 @@ class HostController extends Controller
             $arr[$i][3]=$temp;
         }
         //print_r($arr);
-        $try[]=array(array(1,2,3,4),array(5,6,null,null));
+        //$try[]=array(array(1,2,3,4),array(5,6,null,null));
         if(count($arr)==2)
         {
-            $c=0;
-            for($i=0;$i<$rows;$i++)
+            $row=$rows;
+            $l=0;
+            $m=0;
+            for($j=0;$j<4;$j++)
             {
-                for($j=0;$j<4;$j++)
+                for($k=0;$k<1;$k++)
                 {
-                    $fixture[$c]=array($arr[$i][$j],$arr[$i+1][$j]);
-                    $c++;
+                    $fixture[$l]=array($arr[$m][$j],$arr[$row-1][$j]);
+                    $l++;
+                    $m++;
+                    $row=$row-1;
                 }
+                $m=0;
+                $row=2;
             }
             //print_r($fixture);
-            print_r($try);
+            //print_r($try);
         }
         elseif(count($arr)==4)
         {
@@ -188,8 +195,8 @@ class HostController extends Controller
                 $row=4;
             }
         }
-        
-        return $fixture;
+        print_r($fixture);
+        //return $fixture;
     }
 
     /**

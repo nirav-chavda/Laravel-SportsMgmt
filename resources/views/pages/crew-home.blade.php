@@ -95,7 +95,7 @@
                                          </td>
                                          <td>{{$tmnt->start_date}}</td>
                                          <td>{{$tmnt->venue}}</td>
-                                         <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn deep-purple darken-1">Go!</a></td>
+                                         <td><a href="/crew/tournaments/{{$tmnt->id}}/info" class="btn deep-purple darken-1">Go!</a></td>
                               </tr>
                               @php
                                   $i++;
@@ -148,7 +148,7 @@
                                         </td>
                                         <td>{{$tmnt->start_date}}</td>
                                         <td>{{$tmnt->venue}}</td>
-                                        <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn red darken-2">Go!</a></td>
+                                        <td><a href="/crew/tournaments/{{$tmnt->id}}/info" class="btn red darken-2">Go!</a></td>
                              </tr>
                              @php
                                  $i++;
@@ -201,7 +201,7 @@
                                         </td>
                                         <td>{{$tmnt->start_date}}</td>
                                         <td>{{$tmnt->venue}}</td>
-                                        <td><a href="/crew/home/tournaments/{{$tmnt->id}}/info" class="btn green darken-1">Go!</a></td>
+                                        <td><a href="/crew/tournaments/{{$tmnt->id}}/info" class="btn green darken-1">Go!</a></td>
                                     </tr>
                                     @php
                                         $i++;

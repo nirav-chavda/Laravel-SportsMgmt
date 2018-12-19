@@ -14,10 +14,10 @@
         <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
         <link rel="stylesheet" type="text/css" href="/css/jquery.bracket.min.css" />
         
-        <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('/js/jquery.bracket.min.js') }}"></script>
-        {{-- <script type="text/javascript" src="{{ asset('/js/jquery-2.1.1.min.js') }}"></script> --}}
-        <script type="text/javascript" src="{{ asset('/js/materialize.min.js') }}"></script>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.bracket.min.js"></script>
+        {{-- <script type="text/javascript" src="/js/jquery-2.1.1.min.js') }}"></script> --}}
+        <script type="text/javascript" src="/js/materialize.min.js"></script>
 </head>
 <body class="grey darken-4">
     

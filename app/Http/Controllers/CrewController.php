@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\tournament;
+use App\team;
 use App\fixture;
 
 class CrewController extends Controller
@@ -56,8 +57,24 @@ class CrewController extends Controller
      */
     public function show($id)
     {
+        $r1=0;
+        $r2=0;
+        $r3=0;
         $tmnt=tournament::all()->where('id',$id);
-        return view('pages.crew-tournaments')->with('tmnt',$tmnt);
+        $team=team::all()->where('tournament_Id',$id);
+        if(count($team)<=8){
+            $r1=4;
+            $r2=2;
+            $r3=2;
+        }elseif(count($team)>8 && count($team)<=16){
+            $r1=8;
+            $r2=4;
+            $r3=2;
+            $r4=2;
+        }
+        $round=fixture::all()->where('tournament_id',$id);
+        //echo $round;
+        return view('pages.crew-tournaments')->with(['tmnt'=>$tmnt,'round'=>$round]);
     }
 
     /**

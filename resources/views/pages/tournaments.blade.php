@@ -98,7 +98,7 @@
                                         </thead>
                                         <tbody class="white-text ">
                                             @if($t->gtype_id==1)
-                                            @for($i=1;$i<=3;$i++)
+                                            @for($i=1;$i<=10;$i++)
                                                 <tr>
                                                     <td>{{$i}}</td>
                                                     <td><div class="input-field col s12 {{ $errors->has('first_name') ? ' has-error' : '' }} white-text">
@@ -153,7 +153,7 @@
                                                     </tr>
                                             @endfor
                                             @elseif($t->gtype_id==2)
-                                            @for($i=1;$i<=16;$i++)
+                                            @for($i=1;$i<=15;$i++)
                                                     <tr>
                                                     <td>{{$i}}</td>
                                                     <td style="width:130px"><input type="text" placeholder="FirstName"></td>
@@ -180,7 +180,7 @@
                     </li>
                     <li>
                       <div class="collapsible-header black white-text"><i class="material-icons">format_list_bulleted</i>Fixtures</div>
-                      <div class="collapsible-body grey lighten-3"><span>Lorem ipsum dolor sit amet.</span></div>
+                      <div class="collapsible-body grey lighten-3" id="displayFixtures"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                   </ul>
     </div>

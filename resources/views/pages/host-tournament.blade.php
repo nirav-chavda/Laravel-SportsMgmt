@@ -283,9 +283,9 @@
                         </div>
                     @endif
                 </div>
-                <div class="container grey darken-3" id="fixtures" style="min-height:550px;">
+                <div class="container grey darken-3" id="fixtures" style="min-height:550px; max-height:700px">
                     @if(count($teamS)>0)
-                   <div id="displayFixture" class="grey"></div>
+                   <div id="displayFixture" class="grey darken-3 center" style="padding:15%; padding-top:1.5%;"></div>
                    @else
                    <h2 class="white-text">Seed Teams First</h2>
                    @endif
@@ -444,6 +444,7 @@
             var team_data = [];
             var flag1,flag2;
             var count=1;
+            @if(count($teamS)>8 && count($teamS)<=16)
             @foreach($fixture as $obj)
                 @if($obj->match_id<=8)
                     flag1='<?php echo $obj->team1_id; ?>';                      
@@ -459,8 +460,26 @@
                     } 
                     
                 @endif
-            @endforeach 
-            alert(team_data[0]);
+            @endforeach
+            @elseif(count($teamS)<=8)
+            @foreach($fixture as $obj)
+                @if($obj->match_id<=4)
+                    flag1='<?php echo $obj->team1_id; ?>';                      
+                    flag2='<?php echo $obj->team2_id; ?>';
+                    if(flag1=="") {
+                        team_data.push([null,flag2]);
+                    } 
+                    if(flag2=="") {
+                        team_data.push([flag1,null]);
+                    }
+                    else{
+                        team_data.push([flag1,flag2])
+                    } 
+                    
+                @endif
+            @endforeach
+            @endif 
+           // alert(team_data[0]);
 
             var data= {
                 teams:[
@@ -498,9 +517,14 @@
                     // ]
                  ]
             }
-            $('#displayFixture').bracket({
+            var resizeParameters = {
+                teamWidth: 100,
+                scoreWidth: 45,
+                matchMargin: 20,
+                roundMargin: 50,
                 init: data
-            });
+};
+            $('#displayFixture').bracket(resizeParameters);
         @endif
     </script>
 @endsection
