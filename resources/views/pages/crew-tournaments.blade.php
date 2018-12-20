@@ -64,7 +64,7 @@
                         <ul class="collapsible popout" data-collapsible="accordion">
                                 
                                 <li>
-                                <div class="collapsible-header black white-text"><i class="material-icons">format_list_bulleted</i>Fixture Results</div>
+                                <div class="collapsible-header active black white-text"><i class="material-icons">format_list_bulleted</i>Fixture Results</div>
                                 <div class="collapsible-body grey ">
                                     <div>
                                         {{-- <form name="round1" action="" method="post">
@@ -89,62 +89,69 @@
                                                 $sr=1;
                                                 @endphp
                                                 @foreach($round as $r)
-                                                    <tr class="grey lighten-2">
-                                                        <td>{{$sr}}</td>
-                                                        <td>{{$r->team1_id}}</td>
-                                                        <td>VS</td>
-                                                        <td>{{$r->team2_id}}</td>
-                                                        <td>
-                                                            <div class="input-field col s12 {{ $errors->has('t1_goal') ? ' has-error' : '' }} black-text">
-                                                                <input id="t1_goal" type="text" class="validate black-text" name="t1_goal" value="" required>
-                                                                {{-- <label for="t1_goal">t1_goal</label> --}}
-                                                                    @if ($errors->has('t1_goal'))
-                                                                        <div class="col s12">
-                                                                            <span class="red-text">
-                                                                                <strong>{{ $errors->first('t1_goal') }}</strong>
-                                                                            </span>
-                                                                        </div>
-                                                                    @endif
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="input-field col s12 {{ $errors->has('t2_goal') ? ' has-error' : '' }} black-text">
-                                                                <input id="t2_goal" type="text" class="validate" name="t2_goal" value="" required>
-                                                                {{-- <label for="t2_goal">t2_goal</label> --}}
-                                                                    @if ($errors->has('t2_goal'))
-                                                                        <div class="col s12">
-                                                                            <span class="red-text">
-                                                                                <strong>{{ $errors->first('t2_goal') }}</strong>
-                                                                            </span>
-                                                                        </div>
-                                                                    @endif
-                                                            </div>
-                                                        </td>
-                                                        {{-- <td>
-                                                            <div class="input-field black-text col s12 {{ $errors->has('winner_id') ? ' has-error' : '' }}">
-                                                                <select name="winner_id" id="winner_id" >
-                                                                    <option class="black-text" value="Choose your option" disabled selected>Choose your option</option>
-                                                                    <option class="black-text" id="s1" value="{{$r->team1_id}}">{{$r->team1_id}}</option>
-                                                                    <option class="black-text" id="s2" value="{{$r->team2_id}}">{{$r->team2_id}}</option>
-                                                                </select>
-                                                                <label for="winner_id"></label>
-                                                                @if ($errors->has('winner_id'))
+                                                <tr class="grey lighten-2">
+                                                    <td>{{$sr}}</td>
+                                                    <td id="team1_{{$sr}}">{{$r->team1_id}}</td>
+                                                    <td>VS</td>
+                                                    <td id="team2_{{$sr}}">{{$r->team2_id}}</td>
+                                                    <td>
+                                                        <div class="input-field col s12 {{ $errors->has('t1_goal') ? ' has-error' : '' }} black-text">
+                                                            <input id="t1_goal-{{$sr}}" type="text" class="validate black-text" name="t1_goal" value="<?php if($r->team1_goals!="") { echo $r->team1_goals; } ?>" required>
+                                                            {{-- <label for="t1_goal">t1_goal</label> --}}
+                                                                @if ($errors->has('t1_goal'))
                                                                     <div class="col s12">
                                                                         <span class="red-text">
-                                                                            <strong>{{ $errors->first('winner_id') }}</strong>
+                                                                            <strong>{{ $errors->first('t1_goal') }}</strong>
                                                                         </span>
                                                                     </div>
                                                                 @endif
-                                                            </div>
-                                                        </td> --}}
-                                                        <td>
-                                                            <button class="btn black white_text">Submit</button> 
-                                                        </td>
-                                                    </tr>
-                                                    @php
-                                                    $sr++;
-                                                    @endphp
-                                                @endforeach
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field col s12 {{ $errors->has('t2_goal') ? ' has-error' : '' }} black-text">
+                                                            <input id="t2_goal-{{$sr}}" type="text" class="validate" name="t2_goal" value="<?php if($r->team2_goals!="") { echo $r->team2_goals; } ?>" required>
+                                                            {{-- <label for="t2_goal">t2_goal</label> --}}
+                                                                @if ($errors->has('t2_goal'))
+                                                                    <div class="col s12">
+                                                                        <span class="red-text">
+                                                                            <strong>{{ $errors->first('t2_goal') }}</strong>
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                                                        </div>
+                                                    </td>
+                                                    {{-- <td>
+                                                        <div class="input-field black-text col s12 {{ $errors->has('winner_id') ? ' has-error' : '' }}">
+                                                            <select name="winner_id" id="winner_id" >
+                                                                <option class="black-text" value="Choose your option" disabled selected>Choose your option</option>
+                                                                <option class="black-text" id="s1" value="{{$r->team1_id}}">{{$r->team1_id}}</option>
+                                                                <option class="black-text" id="s2" value="{{$r->team2_id}}">{{$r->team2_id}}</option>
+                                                            </select>
+                                                            <label for="winner_id"></label>
+                                                            @if ($errors->has('winner_id'))
+                                                                <div class="col s12">
+                                                                    <span class="red-text">
+                                                                        <strong>{{ $errors->first('winner_id') }}</strong>
+                                                                    </span>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </td> --}}
+                                                    @if($r->winner_id!="")
+                                                    <td>
+                                                        <button class="btn black white_text disabled" id="{{$sr}}" onclick="addScore(this.id,$t->id)">Submit</button> 
+                                                    </td>
+                                                    @else
+                                                    <td>
+                                                        <button class="btn black white_text" id="{{$sr}}" onclick="addScore(this.id,$t->id)">Submit</button> 
+                                                    </td>
+                                                    @endif
+                                                    
+                                                </tr>
+                                                @php
+                                                $sr++;
+                                                @endphp
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>

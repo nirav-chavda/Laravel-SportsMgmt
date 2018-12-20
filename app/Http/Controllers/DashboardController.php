@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\tournament;
 use App\team;
 use App\participant;
+use App\fixture;
 
 class DashboardController extends Controller
 {
@@ -105,7 +106,10 @@ class DashboardController extends Controller
     public function show($id)
     {
         $tmnt=tournament::findOrFail($id);
-        return view('pages.tournaments')->with('t',$tmnt);
+        $teamS=team::all()->where('tournament_Id',$id)->where('seeding','!=',NULL)->sortBy('seeding');
+        $fixture = fixture::all()->where('tournament_id',$id);
+        //$r1=fixture::all()->where('tournament_Id',$id)->where('match','<=','8')
+        return view('pages.tournaments')->with(['t'=>$tmnt,'fixture'=>$fixture,'teamS'=>$teamS]);
         
     }
     public function addTeamName(Request $request){

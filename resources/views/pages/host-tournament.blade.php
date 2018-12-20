@@ -523,7 +523,7 @@
                 matchMargin: 20,
                 roundMargin: 50,
                 init: data
-};
+            };
             $('#displayFixture').bracket(resizeParameters);
         @endif
     </script>

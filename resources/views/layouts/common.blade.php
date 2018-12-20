@@ -103,6 +103,47 @@
                     });
                 }        
             }
+            function addScore(match_id,id) {
+              //alert(match_id);
+              var team1 = document.getElementById('team1_'+match_id).innerHTML;
+              var team2 = document.getElementById('team2_'+match_id).innerHTML;
+              var team1_goal = document.getElementById('t1_goal-'+match_id).value;
+              var team2_goal = document.getElementById('t2_goal-'+match_id).value;
+              var tournament_id = id;
+
+              //alert(team1 + " " + team2 + " " + team1_goal + " "+ team2_goal);
+              alert(tournament_id);
+              $.ajaxSetup({
+                          headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          }
+                      });
+                      $.ajax({
+                          type:'POST',
+                          url:'{{route('score.update')}}',
+                          data: {
+                            team1 : team1,
+                            team2 : team2,
+                            team1_goals : team1_goal,
+                            team2_goals : team2_goal,
+                            tournament_id : tournament_id,
+                            match_id : match_id,
+                          },
+                          success:function(response){
+                              console.log(response);
+                              if(response['status']=='success') {
+                                document.getElementById(match_id).innerHTML = 'Submited';
+                              } else { 
+                                Materialize.toast('Something Went Wrong', 3000, 'rounded red');
+                              }
+                          },
+                          error:function(response){
+                              console.log(response);
+                              //alert('Something went wrong !');
+                              Materialize.toast('Something Went Wrong. Try Again Later ! ', 3000, 'rounded red')
+                          }
+                    });
+            }
             </script>
 </body>
 </html>

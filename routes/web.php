@@ -85,5 +85,6 @@ Route::prefix('crew')->group(function(){
         ]
     ]);
     Route::get('/tournaments/{id}/info', 'CrewController@show')->name('result.home');
+    Route::post('/tournaments/results/update','CrewController@addScore')->name('score.update');
 });
 
